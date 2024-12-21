@@ -1,0 +1,16 @@
+{
+  "name": "gists",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "format": "prettier --write .",
+    "update": "npm update"
+  },
+  "author": "sametcn99",
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.9"
+  }
+}
