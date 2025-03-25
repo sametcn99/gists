@@ -1,66 +1,70 @@
-```typescript
-'use client'
+# Dictionary Context
 
-import { Dictionary, Locale, getDictionary } from '@/app/[lang]/dictionaries'
-import { usePathname } from 'next/navigation'
-import { createContext, useContext, useEffect, useState } from 'react'
+```tsx
+import { createContext, useContext, ReactNode, useState } from 'react';
 
-type DictionaryContextType = {
-  dictionary: Dictionary
-  locale: Locale
+interface DictionaryItem {
+  id: string;
+  word: string;
+  definition: string;
+  examples: string[];
+  partOfSpeech: string;
 }
 
-export const DictionaryContext = createContext<DictionaryContextType | null>(null)
-
-export const DictionaryProvider = ({ children }: { children: React.ReactNode }) => {
-  const [dictionaryData, setDictionaryData] = useState<DictionaryContextType | null>(null)
-  const pathname = usePathname()
-
-  useEffect(() => {
-    const loadDictionary = async () => {
-      // Get locale from the first part of the path after /
-      const locale = pathname?.split('/')[1] as Locale
-      if (locale) {
-        const dictionary = await getDictionary(locale)
-        setDictionaryData({ dictionary, locale })
-      }
-    }
-
-    loadDictionary()
-  }, [pathname])
-
-  if (!dictionaryData) {
-    return null // or a loading spinner
-  }
-
-  return <DictionaryContext.Provider value={dictionaryData}>{children}</DictionaryContext.Provider>
+interface DictionaryContextType {
+  dictionary: DictionaryItem[];
+  addWord: (word: DictionaryItem) => void;
+  removeWord: (id: string) => void;
+  updateWord: (id: string, word: Partial<DictionaryItem>) => void;
+  findWord: (word: string) => DictionaryItem | undefined;
 }
 
-export const useDictionary = () => {
-  const context = useContext(DictionaryContext)
-  if (context === null) {
-    throw new Error('useDictionary must be used within a DictionaryProvider')
-  }
-  return context
+const DictionaryContext = createContext<DictionaryContextType | undefined>(undefined);
+
+export function DictionaryProvider({ children }: { children: ReactNode }) {
+  const [dictionary, setDictionary] = useState<DictionaryItem[]>([]);
+
+  const addWord = (word: DictionaryItem) => {
+    setDictionary(prev => [...prev, word]);
+  };
+
+  const removeWord = (id: string) => {
+    setDictionary(prev => prev.filter(word => word.id !== id));
+  };
+
+  const updateWord = (id: string, updatedWord: Partial<DictionaryItem>) => {
+    setDictionary(prev =>
+      prev.map(word =>
+        word.id === id ? { ...word, ...updatedWord } : word
+      )
+    );
+  };
+
+  const findWord = (searchWord: string) => {
+    return dictionary.find(
+      item => item.word.toLowerCase() === searchWord.toLowerCase()
+    );
+  };
+
+  return (
+    <DictionaryContext.Provider
+      value={{
+        dictionary,
+        addWord,
+        removeWord,
+        updateWord,
+        findWord,
+      }}
+    >
+      {children}
+    </DictionaryContext.Provider>
+  );
 }
 
-// Helper function to get nested dictionary values using dot notation
-export function t(dict: Dictionary, key: string, params?: Record<string, string>): string {
-  const keys = key.split('.')
-  let value: any = dict
-
-  for (const k of keys) {
-    if (value === undefined) return key
-    value = value[k]
+export function useDictionary() {
+  const context = useContext(DictionaryContext);
+  if (context === undefined) {
+    throw new Error('useDictionary must be used within a DictionaryProvider');
   }
-
-  if (typeof value !== 'string') return key
-
-  if (params) {
-    return value.replace(/\{\{(\w+)\}\}/g, (_, key) => params[key] || `{{${key}}}`)
-  }
-
-  return value
+  return context;
 }
-
-```
