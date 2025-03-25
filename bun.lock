@@ -4,10 +4,10 @@
     "": {
       "name": "gists",
       "devDependencies": {
-        "prettier": "^3.4.2",
-        "prettier-plugin-organize-imports": "^4.1.0",
-        "prettier-plugin-tailwindcss": "^0.6.9",
-        "vitepress": "^1.6.3",
+        "prettier": "latest",
+        "prettier-plugin-organize-imports": "latest",
+        "prettier-plugin-tailwindcss": "latest",
+        "vitepress": "latest",
       },
     },
   },
