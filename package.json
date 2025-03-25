@@ -5,12 +5,16 @@
   "scripts": {
     "start": "bun run index.ts",
     "format": "prettier --write .",
-    "update": "npm update"
+    "update": "npm update",
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
   },
   "author": "sametcn99",
   "devDependencies": {
     "prettier": "^3.4.2",
     "prettier-plugin-organize-imports": "^4.1.0",
-    "prettier-plugin-tailwindcss": "^0.6.9"
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "vitepress": "^1.6.3"
   }
 }
