@@ -92,6 +92,36 @@
   --vp-button-alt-active-border: var(--white);
   --vp-button-alt-active-text: var(--black);
   --vp-button-alt-active-bg: var(--white);
+
+  /* Scrollbar custom properties */
+  --scrollbar-width: 8px;
+  --scrollbar-color: var(--gray-700);
+  --scrollbar-bg: var(--gray-900);
+}
+
+/* Webkit scrollbar styles */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-600);
+}
+
+/* Firefox scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-color) var(--scrollbar-bg);
 }
 
 @media (min-width: 640px) {
