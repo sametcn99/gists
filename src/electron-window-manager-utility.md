@@ -1,4 +1,4 @@
-# Window Manager Utility
+# Electron Window Manager Utility
 
 ```typescript
 type WindowPosition = {

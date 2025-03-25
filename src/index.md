@@ -363,11 +363,11 @@
 
 ---
 
-[Window Manager Utility](./window-manager-utility)
+[Electron Window Manager Utility](./electron-window-manager-utility)
 
 - Browser window management utility
 - Positions and resizes windows
 - Multi-screen support
 - Centralized and maximized mode controls
 - Window state management
-- TypeScript
+- TypeScript Electron
