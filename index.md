@@ -13,4 +13,3 @@ hero:
       text: GitHub
       link: https://github.com/sametcn99
 ---
-

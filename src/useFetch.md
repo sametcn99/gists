@@ -1,7 +1,7 @@
 # useFetch Custom Hook
 
 ```tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface UseFetchResult<T> {
   data: T | null;
@@ -32,8 +32,8 @@ export function useFetch<T>(url: string): UseFetchResult<T> {
         setError(null);
       } catch (err) {
         if (err instanceof Error) {
-          if (err.name === 'AbortError') {
-            console.log('Fetch aborted');
+          if (err.name === "AbortError") {
+            console.log("Fetch aborted");
           } else {
             setError(err);
           }

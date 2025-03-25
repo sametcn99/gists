@@ -1,9 +1,9 @@
 # GitHub Provider
 
 ```tsx
-import { ReactNode, useState } from 'react';
-import { GitHubContext } from './githubContext';
-import { Repository } from '../types';
+import { ReactNode, useState } from "react";
+import { GitHubContext } from "./githubContext";
+import { Repository } from "../types";
 
 interface GitHubProviderProps {
   children: ReactNode;
@@ -19,15 +19,17 @@ export function GitHubProvider({ children }: GitHubProviderProps) {
     setError(null);
 
     try {
-      const response = await fetch(`/api/github?username=${username}&option=repos`);
+      const response = await fetch(
+        `/api/github?username=${username}&option=repos`,
+      );
       if (!response.ok) {
-        throw new Error('Failed to fetch repositories');
+        throw new Error("Failed to fetch repositories");
       }
 
       const data = await response.json();
       setRepositories(data.data);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('An error occurred'));
+      setError(err instanceof Error ? err : new Error("An error occurred"));
     } finally {
       setLoading(false);
     }

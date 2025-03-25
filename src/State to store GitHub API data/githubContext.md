@@ -1,8 +1,8 @@
 # GitHub Context
 
 ```tsx
-import { createContext, useContext } from 'react';
-import { Repository } from '../types';
+import { createContext, useContext } from "react";
+import { Repository } from "../types";
 
 interface GitHubContextType {
   repositories: Repository[];
@@ -12,12 +12,14 @@ interface GitHubContextType {
   fetchUserRepositories: (username: string) => Promise<void>;
 }
 
-export const GitHubContext = createContext<GitHubContextType | undefined>(undefined);
+export const GitHubContext = createContext<GitHubContextType | undefined>(
+  undefined,
+);
 
 export function useGitHub() {
   const context = useContext(GitHubContext);
   if (context === undefined) {
-    throw new Error('useGitHub must be used within a GitHubProvider');
+    throw new Error("useGitHub must be used within a GitHubProvider");
   }
   return context;
 }

@@ -29,12 +29,12 @@ export class WindowManager {
       `top=${pos.y}`,
       `width=${pos.width}`,
       `height=${pos.height}`,
-      'resizable=yes',
-      'scrollbars=yes',
-      'status=yes',
-    ].join(',');
+      "resizable=yes",
+      "scrollbars=yes",
+      "status=yes",
+    ].join(",");
 
-    return this.window.open(url, '_blank', features);
+    return this.window.open(url, "_blank", features);
   }
 
   public center(win?: Window): void {

@@ -12,19 +12,19 @@ const config: Config = {
   theme: {
     extend: {
       width: {
-        'a4': '210mm',
+        a4: "210mm",
       },
       height: {
-        'a4': '297mm',
+        a4: "297mm",
       },
       padding: {
-        'a4': '25mm',
+        a4: "25mm",
       },
       margin: {
-        'a4-page': '15mm',
+        "a4-page": "15mm",
       },
       screens: {
-        'print': {'raw': 'print'},
+        print: { raw: "print" },
       },
     },
   },

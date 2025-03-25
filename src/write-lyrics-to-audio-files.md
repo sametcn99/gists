@@ -1,9 +1,9 @@
 # Write Lyrics to Audio Files
 
 ```javascript
-const fs = require('fs');
-const path = require('path');
-const NodeID3 = require('node-id3');
+const fs = require("fs");
+const path = require("path");
+const NodeID3 = require("node-id3");
 
 /**
  * Writes lyrics to audio files from a corresponding .txt file
@@ -14,16 +14,16 @@ function writeLyricsToAudioFiles(audioDir, lyricsDir) {
   // Read all files in the audio directory
   fs.readdir(audioDir, (err, files) => {
     if (err) {
-      console.error('Error reading audio directory:', err);
+      console.error("Error reading audio directory:", err);
       return;
     }
 
     // Filter for audio files
-    const audioFiles = files.filter(file => 
-      ['.mp3', '.m4a', '.wav'].includes(path.extname(file).toLowerCase())
+    const audioFiles = files.filter((file) =>
+      [".mp3", ".m4a", ".wav"].includes(path.extname(file).toLowerCase()),
     );
 
-    audioFiles.forEach(audioFile => {
+    audioFiles.forEach((audioFile) => {
       const baseName = path.basename(audioFile, path.extname(audioFile));
       const lyricsFile = path.join(lyricsDir, `${baseName}.txt`);
 
@@ -31,12 +31,12 @@ function writeLyricsToAudioFiles(audioDir, lyricsDir) {
       if (fs.existsSync(lyricsFile)) {
         try {
           // Read lyrics from text file
-          const lyrics = fs.readFileSync(lyricsFile, 'utf8');
+          const lyrics = fs.readFileSync(lyricsFile, "utf8");
           const audioPath = path.join(audioDir, audioFile);
 
           // Create tags object with lyrics
           const tags = {
-            lyrics: lyrics
+            lyrics: lyrics,
           };
 
           // Write tags to audio file
@@ -53,7 +53,7 @@ function writeLyricsToAudioFiles(audioDir, lyricsDir) {
 }
 
 // Example usage
-const audioDirectory = './audio';
-const lyricsDirectory = './lyrics';
+const audioDirectory = "./audio";
+const lyricsDirectory = "./lyrics";
 writeLyricsToAudioFiles(audioDirectory, lyricsDirectory);
 ```

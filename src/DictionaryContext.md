@@ -1,7 +1,7 @@
 # Dictionary Context
 
 ```tsx
-import { createContext, useContext, ReactNode, useState } from 'react';
+import { createContext, useContext, ReactNode, useState } from "react";
 
 interface DictionaryItem {
   id: string;
@@ -19,30 +19,30 @@ interface DictionaryContextType {
   findWord: (word: string) => DictionaryItem | undefined;
 }
 
-const DictionaryContext = createContext<DictionaryContextType | undefined>(undefined);
+const DictionaryContext = createContext<DictionaryContextType | undefined>(
+  undefined,
+);
 
 export function DictionaryProvider({ children }: { children: ReactNode }) {
   const [dictionary, setDictionary] = useState<DictionaryItem[]>([]);
 
   const addWord = (word: DictionaryItem) => {
-    setDictionary(prev => [...prev, word]);
+    setDictionary((prev) => [...prev, word]);
   };
 
   const removeWord = (id: string) => {
-    setDictionary(prev => prev.filter(word => word.id !== id));
+    setDictionary((prev) => prev.filter((word) => word.id !== id));
   };
 
   const updateWord = (id: string, updatedWord: Partial<DictionaryItem>) => {
-    setDictionary(prev =>
-      prev.map(word =>
-        word.id === id ? { ...word, ...updatedWord } : word
-      )
+    setDictionary((prev) =>
+      prev.map((word) => (word.id === id ? { ...word, ...updatedWord } : word)),
     );
   };
 
   const findWord = (searchWord: string) => {
     return dictionary.find(
-      item => item.word.toLowerCase() === searchWord.toLowerCase()
+      (item) => item.word.toLowerCase() === searchWord.toLowerCase(),
     );
   };
 
@@ -64,7 +64,8 @@ export function DictionaryProvider({ children }: { children: ReactNode }) {
 export function useDictionary() {
   const context = useContext(DictionaryContext);
   if (context === undefined) {
-    throw new Error('useDictionary must be used within a DictionaryProvider');
+    throw new Error("useDictionary must be used within a DictionaryProvider");
   }
   return context;
 }
+```

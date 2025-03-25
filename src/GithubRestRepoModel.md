@@ -341,3 +341,4 @@ public class SecurityStatus
     [JsonPropertyName("status")]
     public string? Status { get; set; }
 }
+```

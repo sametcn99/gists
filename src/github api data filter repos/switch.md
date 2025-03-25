@@ -1,10 +1,13 @@
 # GitHub Repository Filter Switch
 
 ```typescript
-import { Repository, FilterOptions } from './types';
+import { Repository, FilterOptions } from "./types";
 
-export function filterRepositories(repositories: Repository[], options: FilterOptions): Repository[] {
-  return repositories.filter(repo => {
+export function filterRepositories(
+  repositories: Repository[],
+  options: FilterOptions,
+): Repository[] {
+  return repositories.filter((repo) => {
     // Language filter
     if (options.language && repo.language !== options.language) {
       return false;
