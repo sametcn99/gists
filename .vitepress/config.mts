@@ -8,9 +8,8 @@ export default defineConfig({
   outDir: "../dist",
   lang: "en-US",
   titleTemplate: " sametcc.me",
-  appearance: false,
+  appearance: "force-dark",
   ignoreDeadLinks: true,
-
   themeConfig: {
     search: {
       provider: "local",
@@ -99,8 +98,18 @@ export default defineConfig({
       text: "Last Updated",
     },
     siteTitle: "Code Snippets Library",
+    docFooter: {
+      prev: "Previous",
+      next: "Next",
+    },
+    notFound: {
+      title: "Oops! Page Not Found",
+      quote: "Looks like this page took a coffee break!",
+      linkLabel: "Go to Home",
+      code: "404",
+      linkText: "Go Home",
+    },
   },
-
   markdown: {
     lineNumbers: true,
   },
