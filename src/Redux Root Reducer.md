@@ -1,4 +1,16 @@
-# Redux Root Reducer
+# Redux Provider Component
+
+```typescript
+"use client";
+import reduxStore from "@/lib/redux/store";
+import { Provider } from "react-redux";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <Provider store={reduxStore}>{children}</Provider>;
+}
+```
+
+## Redux Root Reducer
 
 ```typescript
 // Import the combineReducers function from Redux Toolkit to combine multiple reducers into a single root reducer
