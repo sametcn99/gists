@@ -191,17 +191,27 @@ html {
 }
 
 .vp-doc a,
-.VPNavBarMenuLink,
-.VPSidebarItem a {
+.VPNavBarMenuLink {
   color: var(--white);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
+/* Remove underlines from sidebar items */
+.VPSidebarItem a {
+  color: var(--white);
+  text-decoration: none; /* Remove underline */
+}
+
 .vp-doc a:hover,
-.VPNavBarMenuLink:hover,
+.VPNavBarMenuLink:hover {
+  color: var(--gray-300);
+}
+
+/* Hover state for sidebar items without underline */
 .VPSidebarItem a:hover {
   color: var(--gray-300);
+  text-decoration: none; /* Ensure no underline on hover */
 }
 
 .VPNavBar {

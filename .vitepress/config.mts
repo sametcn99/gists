@@ -12,10 +12,8 @@ export default defineConfig({
   ignoreDeadLinks: true,
 
   themeConfig: {
-    nav: [{ text: "Home", link: "/" }],
     search: {
       provider: "local",
-   
     },
     sidebar: [
       {
@@ -97,6 +95,10 @@ export default defineConfig({
       { icon: "linkedin", link: "https://www.linkedin.com/in/sametc0/" },
       { icon: "telegram", link: "https://t.me/sametc0" },
     ],
+    lastUpdated: {
+      text: "Last Updated",
+    },
+    siteTitle: "Code Snippets Library",
   },
 
   markdown: {
