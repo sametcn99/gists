@@ -5,7 +5,7 @@ export default defineConfig({
   description: "A Collection of Useful Code Snippets and Documentation",
   // Set the root path to redirect to /
   srcDir: "./src",
-  outDir: "../dist",
+  outDir: "./.vitepress/dist",
   lang: "en-US",
   titleTemplate: " sametcc.me",
   appearance: "force-dark",
