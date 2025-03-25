@@ -5,69 +5,80 @@
 
 /**
  * Colors
- *
- * Each colors have exact same color scale system with 3 levels of solid
- * colors with different brightness, and 1 soft color.
- *
- * - `XXX-1`: The most solid color used mainly for colored text. It must
- *   satisfy the contrast ratio against when used on top of `XXX-soft`.
- *
- * - `XXX-2`: The color used mainly for hover state of the button.
- *
- * - `XXX-3`: The color for solid background, such as bg color of the button.
- *   It must satisfy the contrast ratio with pure white (#ffffff) text on
- *   top of it.
- *
- * - `XXX-soft`: The color used for subtle background such as custom container
- *   or badges. It must satisfy the contrast ratio when putting `XXX-1` colors
- *   on top of it.
- *
- *   The soft color must be semi transparent alpha channel. This is crucial
- *   because it allows adding multiple "soft" colors on top of each other
- *   to create a accent, such as when having inline code block inside
- *   custom containers.
- *
- * - `default`: The color used purely for subtle indication without any
- *   special meanings attached to it such as bg color for menu hover state.
- *
- * - `brand`: Used for primary brand colors, such as link text, button with
- *   brand theme, etc.
- *
- * - `tip`: Used to indicate useful information. The default theme uses the
- *   brand color for this by default.
- *
- * - `warning`: Used to indicate warning to the users. Used in custom
- *   container, badges, etc.
- *
- * - `danger`: Used to show error, or dangerous message to the users. Used
- *   in custom container, badges, etc.
+ * 
+ * Modified to create a pure black and white theme with high contrast
  * -------------------------------------------------------------------------- */
 
 :root {
-  --vp-c-default-1: var(--vp-c-gray-1);
-  --vp-c-default-2: var(--vp-c-gray-2);
-  --vp-c-default-3: var(--vp-c-gray-3);
-  --vp-c-default-soft: var(--vp-c-gray-soft);
+  /* Define our grayscale palette */
+  --black: #000000;
+  --white: #ffffff;
+  --gray-100: #f8f8f8;
+  --gray-200: #e0e0e0;
+  --gray-300: #c0c0c0;
+  --gray-400: #a0a0a0;
+  --gray-500: #808080;
+  --gray-600: #606060;
+  --gray-700: #404040;
+  --gray-800: #202020;
+  --gray-900: #101010;
+  --gray-950: #080808; /* New ultra-subtle gray for code blocks */
 
-  --vp-c-brand-1: var(--vp-c-indigo-1);
-  --vp-c-brand-2: var(--vp-c-indigo-2);
-  --vp-c-brand-3: var(--vp-c-indigo-3);
-  --vp-c-brand-soft: var(--vp-c-indigo-soft);
+  /* Set base colors */
+  --vp-c-bg: var(--black);
+  --vp-c-bg-alt: var(--gray-900);
+  --vp-c-bg-elv: var(--gray-800);
+  --vp-c-bg-soft: var(--gray-800);
 
-  --vp-c-tip-1: var(--vp-c-brand-1);
-  --vp-c-tip-2: var(--vp-c-brand-2);
-  --vp-c-tip-3: var(--vp-c-brand-3);
-  --vp-c-tip-soft: var(--vp-c-brand-soft);
+  /* Sidebar colors */
+  --vp-sidebar-bg-color: var(--black);
 
-  --vp-c-warning-1: var(--vp-c-yellow-1);
-  --vp-c-warning-2: var(--vp-c-yellow-2);
-  --vp-c-warning-3: var(--vp-c-yellow-3);
-  --vp-c-warning-soft: var(--vp-c-yellow-soft);
+  /* Text colors with high contrast */
+  --vp-c-text-1: var(--white);
+  --vp-c-text-2: var(--gray-200);
+  --vp-c-text-3: var(--gray-400);
 
-  --vp-c-danger-1: var(--vp-c-red-1);
-  --vp-c-danger-2: var(--vp-c-red-2);
-  --vp-c-danger-3: var(--vp-c-red-3);
-  --vp-c-danger-soft: var(--vp-c-red-soft);
+  /* Default colors */
+  --vp-c-default-1: var(--gray-100);
+  --vp-c-default-2: var(--gray-300);
+  --vp-c-default-3: var(--gray-500);
+  --vp-c-default-soft: rgba(200, 200, 200, 0.15);
+
+  /* Brand colors (using grayscale instead of indigo) */
+  --vp-c-brand-1: var(--white);
+  --vp-c-brand-2: var(--gray-200);
+  --vp-c-brand-3: var(--gray-400);
+  --vp-c-brand-soft: rgba(255, 255, 255, 0.14);
+
+  /* Tip colors (using grayscale) */
+  --vp-c-tip-1: var(--white);
+  --vp-c-tip-2: var(--gray-200);
+  --vp-c-tip-3: var(--gray-300);
+  --vp-c-tip-soft: rgba(255, 255, 255, 0.14);
+
+  /* Warning colors (using grayscale) */
+  --vp-c-warning-1: var(--gray-100);
+  --vp-c-warning-2: var(--gray-300);
+  --vp-c-warning-3: var(--gray-500);
+  --vp-c-warning-soft: rgba(200, 200, 200, 0.14);
+
+  /* Danger colors (using grayscale) */
+  --vp-c-danger-1: var(--gray-100);
+  --vp-c-danger-2: var(--gray-300);
+  --vp-c-danger-3: var(--gray-500);
+  --vp-c-danger-soft: rgba(200, 200, 200, 0.14);
+
+  /* Code, borders and dividers */
+  --vp-c-border: rgba(200, 200, 200, 0.12);
+  --vp-c-divider: rgba(200, 200, 200, 0.1);
+  --vp-c-gutter: var(--black);
+  --vp-code-bg-color: var(--gray-950); /* Slightly lighter than pure black */
+  --vp-code-color: var(--white);
+  --vp-code-copy-code-bg: var(--gray-800);
+  --vp-code-copy-code-hover-bg: var(--gray-700);
+  
+  /* Markdown code block colors */
+  --vp-code-block-bg: var(--gray-950); /* Slightly lighter than pure black */
 }
 
 /**
@@ -76,14 +87,25 @@
 
 :root {
   --vp-button-brand-border: transparent;
-  --vp-button-brand-text: var(--vp-c-white);
-  --vp-button-brand-bg: var(--vp-c-brand-3);
+  --vp-button-brand-text: var(--black);
+  --vp-button-brand-bg: var(--white);
   --vp-button-brand-hover-border: transparent;
-  --vp-button-brand-hover-text: var(--vp-c-white);
-  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-hover-text: var(--black);
+  --vp-button-brand-hover-bg: var(--gray-200);
   --vp-button-brand-active-border: transparent;
-  --vp-button-brand-active-text: var(--vp-c-white);
-  --vp-button-brand-active-bg: var(--vp-c-brand-1);
+  --vp-button-brand-active-text: var(--black);
+  --vp-button-brand-active-bg: var(--gray-300);
+
+  /* Secondary button (alternative button) */
+  --vp-button-alt-border: var(--gray-500);
+  --vp-button-alt-text: var(--white);
+  --vp-button-alt-bg: transparent;
+  --vp-button-alt-hover-border: var(--white);
+  --vp-button-alt-hover-text: var(--white);
+  --vp-button-alt-hover-bg: transparent;
+  --vp-button-alt-active-border: var(--white);
+  --vp-button-alt-active-text: var(--black);
+  --vp-button-alt-active-bg: var(--white);
 }
 
 /**
@@ -91,17 +113,13 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(
-    120deg,
-    #bd34fe 30%,
-    #41d1ff
-  );
+  --vp-home-hero-name-color: var(--white);
+  --vp-home-hero-name-background: none;
 
   --vp-home-hero-image-background-image: linear-gradient(
     -45deg,
-    #bd34fe 50%,
-    #47caff 50%
+    rgba(200, 200, 200, 0.8) 50%,
+    rgba(160, 160, 160, 0.8) 50%
   );
   --vp-home-hero-image-filter: blur(44px);
 }
@@ -123,10 +141,25 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-  --vp-custom-block-tip-border: transparent;
-  --vp-custom-block-tip-text: var(--vp-c-text-1);
-  --vp-custom-block-tip-bg: var(--vp-c-brand-soft);
-  --vp-custom-block-tip-code-bg: var(--vp-c-brand-soft);
+  --vp-custom-block-tip-border: var(--gray-700);
+  --vp-custom-block-tip-text: var(--white);
+  --vp-custom-block-tip-bg: rgba(255, 255, 255, 0.05);
+  --vp-custom-block-tip-code-bg: rgba(255, 255, 255, 0.08);
+
+  --vp-custom-block-warning-border: var(--gray-700);
+  --vp-custom-block-warning-text: var(--white);
+  --vp-custom-block-warning-bg: rgba(255, 255, 255, 0.05);
+  --vp-custom-block-warning-code-bg: rgba(255, 255, 255, 0.08);
+
+  --vp-custom-block-danger-border: var(--gray-700);
+  --vp-custom-block-danger-text: var(--white);
+  --vp-custom-block-danger-bg: rgba(255, 255, 255, 0.05);
+  --vp-custom-block-danger-code-bg: rgba(255, 255, 255, 0.08);
+
+  --vp-custom-block-details-border: var(--gray-700);
+  --vp-custom-block-details-text: var(--white);
+  --vp-custom-block-details-bg: rgba(255, 255, 255, 0.05);
+  --vp-custom-block-details-code-bg: rgba(255, 255, 255, 0.08);
 }
 
 /**
@@ -134,5 +167,184 @@
  * -------------------------------------------------------------------------- */
 
 .DocSearch {
-  --docsearch-primary-color: var(--vp-c-brand-1) !important;
+  --docsearch-primary-color: var(--white) !important;
+  --docsearch-text-color: var(--white) !important;
+  --docsearch-container-background: rgba(0, 0, 0, 0.8) !important;
+  --docsearch-modal-background: var(--black) !important;
+  --docsearch-modal-shadow: 0 0 10px rgba(255, 255, 255, 0.1) !important;
+  --docsearch-searchbox-background: var(--gray-900) !important;
+  --docsearch-searchbox-focus-background: var(--gray-800) !important;
+  --docsearch-hit-background: var(--gray-900) !important;
+  --docsearch-hit-color: var(--white) !important;
+  --docsearch-hit-active-color: var(--black) !important;
+  --docsearch-hit-shadow: none !important;
+  --docsearch-hit-active-background: var(--white) !important;
+  --docsearch-footer-background: var(--black) !important;
+  --docsearch-footer-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) !important;
+  --docsearch-logo-color: var(--gray-400) !important;
+  --docsearch-muted-color: var(--gray-400) !important;
+}
+
+/* Additional customizations for black and white theme */
+html {
+  color-scheme: dark;
+}
+
+.vp-doc a,
+.VPNavBarMenuLink,
+.VPSidebarItem a {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.vp-doc a:hover,
+.VPNavBarMenuLink:hover,
+.VPSidebarItem a:hover {
+  color: var(--gray-300);
+}
+
+.VPNavBar {
+  border-bottom: 1px solid var(--vp-c-border);
+}
+
+/* Sidebar styling */
+.VPSidebar {
+  border-right: 1px solid var(--vp-c-border);
+  background-color: var(--black) !important;
+}
+
+.VPSidebarItem.level-0 > .item .text,
+.VPSidebarItem.level-1 > .item .text,
+.VPSidebarItem.level-2 > .item .text,
+.VPSidebarItem.level-3 > .item .text,
+.VPSidebarItem.level-4 > .item .text,
+.VPSidebarItem.level-5 > .item .text {
+  color: var(--white);
+}
+
+.VPSidebarItem.is-active > .item .text {
+  color: var(--white);
+  font-weight: 600;
+}
+
+.VPSidebarItem.is-active > .item {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Sidebar divider and heading colors */
+.VPSidebar .group-header {
+  border-top: 1px solid var(--vp-c-border);
+}
+
+.VPSidebar .group-header .title {
+  color: var(--gray-300);
+}
+
+/* Ensure all sidebar elements are readable on black */
+.VPSidebar .link {
+  color: var(--white);
+}
+
+.VPSidebar .link:hover {
+  color: var(--gray-300);
+}
+
+/* Ensure collapsed sidebar toggle has proper contrast */
+.VPSidebar .collapsed {
+  background-color: var(--black);
+}
+
+/* Ensure mobile sidebar has the same black background */
+@media (max-width: 960px) {
+  .VPSidebar {
+    background-color: var(--black) !important;
+  }
+}
+
+/* Code block styling */
+.vp-doc div[class*='language-'] {
+  background-color: var(--gray-950) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.vp-doc [class*='language-'] code {
+  color: var(--white);
+}
+
+.vp-doc [class*='language-'] pre {
+  background-color: transparent;
+}
+
+/* Inline code styling */
+.vp-doc :not(pre) > code {
+  background-color: var(--gray-950);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+/* Specific markdown component styling */
+.markdown-body pre, 
+.markdown-container pre,
+.markdown-content pre {
+  background-color: var(--gray-950) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+/* Markdown code highlighter */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--gray-500);
+}
+
+.token.punctuation {
+  color: var(--gray-300);
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted,
+.token.keyword {
+  color: var(--gray-200);
+}
+
+.token.boolean,
+.token.number {
+  color: var(--white);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: var(--gray-200);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: var(--gray-300);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.function,
+.token.class-name {
+  color: var(--white);
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: var(--gray-200);
 }

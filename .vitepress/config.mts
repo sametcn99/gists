@@ -5,7 +5,7 @@ export default defineConfig({
   description: "A Collection of Useful Code Snippets and Documentation",
   // Set the root path to redirect to /
   srcDir: "./src",
-  outDir: "dist",
+  outDir: "../dist",
   lang: "en-US",
   titleTemplate: " sametcc.me",
   appearance: "dark",
@@ -13,9 +13,12 @@ export default defineConfig({
 
   themeConfig: {
     nav: [{ text: "Home", link: "/" }],
+    search: {
+      provider: "local",
+   
+    },
     sidebar: [
       {
-        text: "Documentation",
         items: [
           {
             text: "Convert to Milliseconds",
