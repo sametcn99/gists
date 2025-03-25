@@ -34,9 +34,9 @@
   --vp-sidebar-bg-color: var(--black);
 
   /* Text colors with high contrast */
-  --vp-c-text-1: var(--white);
-  --vp-c-text-2: var(--gray-200);
-  --vp-c-text-3: var(--gray-400);
+  --vp-c-text-1: var(--gray-300);
+  --vp-c-text-2: var(--gray-400);
+  --vp-c-text-3: var(--gray-500);
 
   /* Default colors */
   --vp-c-default-1: var(--gray-100);

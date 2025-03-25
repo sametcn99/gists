@@ -8,7 +8,7 @@ export default defineConfig({
   outDir: "../dist",
   lang: "en-US",
   titleTemplate: " sametcc.me",
-  appearance: "dark",
+  appearance: false,
   ignoreDeadLinks: true,
 
   themeConfig: {
