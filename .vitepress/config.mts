@@ -80,7 +80,7 @@ export default defineConfig({
           },
           {
             text: "Combine Locals",
-            link: "/combine-locals",
+            link: "/combine-locales",
           },
         ].sort((a, b) => a.text.localeCompare(b.text)),
       },
