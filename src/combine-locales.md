@@ -3,12 +3,18 @@
 This script is designed to validate and combine locale files for a project. It checks for consistency between English and Turkish translations, ensuring that all keys are present in both languages. If any discrepancies are found, it provides detailed error messages to help identify the issues. The script also combines the JSON files from each language directory into a single file for each language, ensuring that the combined files are properly formatted and free of errors.
 
 ```typescript
+import { EventEmitter } from 'events'
 import fs from 'fs'
 import path from 'path'
 
 interface KeyData {
   keys: Set<string>
   keysByFile: Map<string, string[]>
+}
+
+interface TranslationError {
+  message: string
+  details?: any
 }
 
 class LocaleError extends Error {
@@ -21,208 +27,343 @@ class LocaleError extends Error {
   }
 }
 
-// Function to ensure directory exists and has JSON files
-function validateDirectory(dirPath: string, dirName: string): void {
-  if (!fs.existsSync(dirPath)) {
-    throw new LocaleError(`${dirName} directory does not exist: ${dirPath}`)
+class TranslationManager extends EventEmitter {
+  private enPath: string
+  private trPath: string
+  private combinedPath: string
+  private watchers: fs.FSWatcher[] = []
+  private debounceTimeout: NodeJS.Timeout | null = null
+  private isProcessing = false
+
+  constructor(basePath: string) {
+    super()
+    this.enPath = path.join(basePath, 'en')
+    this.trPath = path.join(basePath, 'tr')
+    this.combinedPath = path.join(basePath, 'combined')
   }
 
-  const files = fs.readdirSync(dirPath)
-  const jsonFiles = files.filter((file) => file.endsWith('.json'))
+  private validateDirectory(dirPath: string, dirName: string): void {
+    if (!fs.existsSync(dirPath)) {
+      throw new LocaleError(`${dirName} directory does not exist: ${dirPath}`)
+    }
 
-  if (jsonFiles.length === 0) {
-    throw new LocaleError(`No JSON files found in ${dirName} directory: ${dirPath}`)
+    const files = fs.readdirSync(dirPath)
+    const jsonFiles = files.filter((file) => file.endsWith('.json'))
+
+    if (jsonFiles.length === 0) {
+      throw new LocaleError(`No JSON files found in ${dirName} directory: ${dirPath}`)
+    }
   }
-}
 
-// Function to safely parse JSON with detailed error handling
-function safeParseJson(filePath: string): any {
-  try {
-    let content = fs.readFileSync(filePath, 'utf8')
+  private safeParseJson(filePath: string): any {
+    try {
+      let content = fs.readFileSync(filePath, 'utf8')
 
-    // Remove UTF-8 BOM if present
-    if (content.charCodeAt(0) === 0xfeff) {
-      content = content.slice(1)
-    }
-
-    // Check for empty file
-    if (!content.trim()) {
-      throw new LocaleError(`Empty translation file: ${filePath}`)
-    }
-
-    const parsed = JSON.parse(content)
-
-    // Validate that the content is an object
-    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
-      throw new LocaleError(`Invalid translation file format. Expected an object: ${filePath}`)
-    }
-
-    return parsed
-  } catch (error) {
-    if (error instanceof SyntaxError) {
-      throw new LocaleError(`Invalid JSON format in file: ${filePath}`, { originalError: error.message })
-    }
-    throw error
-  }
-}
-
-// Function to get all keys from a directory's JSON files
-function getAllKeys(dirPath: string): KeyData {
-  const keys: Set<string> = new Set()
-  const keysByFile: Map<string, string[]> = new Map()
-
-  const files = fs.readdirSync(dirPath)
-  files.forEach((file: string) => {
-    if (file.endsWith('.json')) {
-      const filePath = path.join(dirPath, file)
-      const content = safeParseJson(filePath)
-      const fileKeys = Object.keys(content)
-
-      if (fileKeys.length === 0) {
-        throw new LocaleError(`No translation keys found in file: ${filePath}`)
+      // Remove UTF-8 BOM if present
+      if (content.charCodeAt(0) === 0xfeff) {
+        content = content.slice(1)
       }
 
-      // Validate key format
-      fileKeys.forEach((key) => {
-        if (!key.match(/^[a-zA-Z0-9_.-]+$/)) {
-          throw new LocaleError(`Invalid key format found: "${key}" in file: ${filePath}. Keys should only contain letters, numbers, underscores, dots, and hyphens.`)
-        }
-        keys.add(key)
-      })
+      if (!content.trim()) {
+        throw new LocaleError(`Empty translation file: ${filePath}`)
+      }
 
-      keysByFile.set(file, fileKeys)
-    }
-  })
+      const parsed = JSON.parse(content)
 
-  return { keys, keysByFile }
-}
+      if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+        throw new LocaleError(`Invalid translation file format. Expected an object: ${filePath}`)
+      }
 
-// Function to compare keys between two language directories
-function compareLanguageKeys(enPath: string, trPath: string): void {
-  const enData = getAllKeys(enPath)
-  const trData = getAllKeys(trPath)
-
-  const enKeys = Array.from(enData.keys)
-  const trKeys = Array.from(trData.keys)
-
-  const missingInTr = enKeys.filter((key) => !trKeys.includes(key))
-  const missingInEn = trKeys.filter((key) => !enKeys.includes(key))
-
-  if (missingInTr.length > 0 || missingInEn.length > 0) {
-    const details: { missingInTr?: string[]; missingInEn?: string[] } = {}
-    let errorMessage = 'Translation key mismatch found:\n'
-
-    if (missingInTr.length > 0) {
-      errorMessage += '\nKeys missing in Turkish translations:\n'
-      details.missingInTr = []
-      missingInTr.forEach((key) => {
-        for (const [file, keys] of enData.keysByFile.entries()) {
-          if (keys.includes(key)) {
-            const detail = `"${key}" (en/${file})`
-            errorMessage += `- ${detail}\n`
-            details.missingInTr!.push(detail)
-          }
-        }
-      })
-    }
-
-    if (missingInEn.length > 0) {
-      errorMessage += '\nKeys missing in English translations:\n'
-      details.missingInEn = []
-      missingInEn.forEach((key) => {
-        for (const [file, keys] of trData.keysByFile.entries()) {
-          if (keys.includes(key)) {
-            const detail = `"${key}" (tr/${file})`
-            errorMessage += `- ${detail}\n`
-            details.missingInEn!.push(detail)
-          }
-        }
-      })
-    }
-
-    throw new LocaleError(errorMessage, details)
-  }
-}
-
-// Function to read and combine JSON files from a directory
-function combineJsonFiles(dirPath: string): Record<string, any> {
-  const combined: Record<string, any> = {}
-  const files = fs.readdirSync(dirPath)
-
-  files.forEach((file: string) => {
-    if (file.endsWith('.json')) {
-      const filePath = path.join(dirPath, file)
-      const content = safeParseJson(filePath)
-      const namespace = file.replace('.json', '')
-      combined[namespace] = content
-    }
-  })
-
-  return combined
-}
-
-// Ensure combined directory exists
-function ensureCombinedDirExists(baseDir: string): void {
-  const combinedDir = path.join(baseDir, 'combined')
-  if (!fs.existsSync(combinedDir)) {
-    try {
-      fs.mkdirSync(combinedDir, { recursive: true })
+      return parsed
     } catch (error) {
-      throw new LocaleError(`Failed to create combined directory: ${combinedDir}`, { originalError: error instanceof Error ? error.message : 'Unknown error' })
+      if (error instanceof SyntaxError) {
+        throw new LocaleError(`Invalid JSON format in file: ${filePath}`, { originalError: error.message })
+      }
+      throw error
+    }
+  }
+
+  private getNestedKeys(obj: any, prefix = ''): string[] {
+    const keys: string[] = []
+
+    for (const key in obj) {
+      const fullKey = prefix ? `${prefix}.${key}` : key
+      keys.push(fullKey)
+
+      if (obj[key] && typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+        keys.push(...this.getNestedKeys(obj[key], fullKey))
+      }
+    }
+
+    return keys
+  }
+
+  private getValueByPath(obj: any, path: string): any {
+    return path.split('.').reduce((acc, part) => acc?.[part], obj)
+  }
+
+  private getAllKeys(dirPath: string): KeyData {
+    const keys: Set<string> = new Set()
+    const keysByFile: Map<string, string[]> = new Map()
+
+    const files = fs.readdirSync(dirPath)
+    files.forEach((file: string) => {
+      if (file.endsWith('.json')) {
+        const filePath = path.join(dirPath, file)
+        const content = this.safeParseJson(filePath)
+        const fileKeys = this.getNestedKeys(content)
+
+        if (fileKeys.length === 0) {
+          throw new LocaleError(`No translation keys found in file: ${filePath}`)
+        }
+
+        fileKeys.forEach((key) => {
+          if (!key.match(/^[a-zA-Z0-9_.-]+$/)) {
+            throw new LocaleError(`Invalid key format found: "${key}" in file: ${filePath}. Keys should only contain letters, numbers, underscores, dots, and hyphens.`)
+          }
+          keys.add(key)
+        })
+
+        keysByFile.set(file, fileKeys)
+      }
+    })
+
+    return { keys, keysByFile }
+  }
+
+  private compareLanguageKeys(): void {
+    const enData = this.getAllKeys(this.enPath)
+    const trData = this.getAllKeys(this.trPath)
+
+    const enKeys = Array.from(enData.keys)
+    const trKeys = Array.from(trData.keys)
+
+    const missingInTr = enKeys.filter((key) => !trKeys.includes(key))
+    const missingInEn = trKeys.filter((key) => !enKeys.includes(key))
+    const typeMismatches: { key: string; enType: string; trType: string; enFile: string; trFile: string }[] = []
+
+    enKeys.forEach((key) => {
+      if (trKeys.includes(key)) {
+        for (const [enFile, enFileKeys] of enData.keysByFile.entries()) {
+          if (enFileKeys.includes(key)) {
+            const enContent = this.safeParseJson(path.join(this.enPath, enFile))
+            const trContent = this.safeParseJson(path.join(this.trPath, enFile))
+
+            const enValue = this.getValueByPath(enContent, key)
+            const trValue = this.getValueByPath(trContent, key)
+
+            if (enValue !== undefined && trValue !== undefined) {
+              const enType = Array.isArray(enValue) ? 'array' : typeof enValue
+              const trType = Array.isArray(trValue) ? 'array' : typeof trValue
+
+              if (enType !== trType) {
+                typeMismatches.push({
+                  key,
+                  enType,
+                  trType,
+                  enFile,
+                  trFile: enFile,
+                })
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (missingInTr.length > 0 || missingInEn.length > 0 || typeMismatches.length > 0) {
+      const details: { missingInTr?: string[]; missingInEn?: string[]; typeMismatches?: any[] } = {}
+      let errorMessage = 'Translation issues found:\n'
+
+      if (missingInTr.length > 0) {
+        errorMessage += '\nKeys missing in Turkish translations:\n'
+        details.missingInTr = []
+        missingInTr.forEach((key) => {
+          for (const [file, keys] of enData.keysByFile.entries()) {
+            if (keys.includes(key)) {
+              const detail = `"${key}" (en/${file})`
+              errorMessage += `- ${detail}\n`
+              details.missingInTr!.push(detail)
+            }
+          }
+        })
+      }
+
+      if (missingInEn.length > 0) {
+        errorMessage += '\nKeys missing in English translations:\n'
+        details.missingInEn = []
+        missingInEn.forEach((key) => {
+          for (const [file, keys] of trData.keysByFile.entries()) {
+            if (keys.includes(key)) {
+              const detail = `"${key}" (tr/${file})`
+              errorMessage += `- ${detail}\n`
+              details.missingInEn!.push(detail)
+            }
+          }
+        })
+      }
+
+      if (typeMismatches.length > 0) {
+        errorMessage += '\nType mismatches between translations:\n'
+        details.typeMismatches = typeMismatches
+        typeMismatches.forEach(({ key, enType, trType, enFile, trFile }) => {
+          const detail = `"${key}" has different types: ${enType} (en/${enFile}) vs ${trType} (tr/${trFile})`
+          errorMessage += `- ${detail}\n`
+        })
+      }
+
+      throw new LocaleError(errorMessage, details)
+    }
+  }
+
+  private combineJsonFiles(dirPath: string): Record<string, any> {
+    const combined: Record<string, any> = {}
+    const files = fs.readdirSync(dirPath)
+
+    files.forEach((file: string) => {
+      if (file.endsWith('.json')) {
+        const filePath = path.join(dirPath, file)
+        const content = this.safeParseJson(filePath)
+        const namespace = file.replace('.json', '')
+        combined[namespace] = content
+      }
+    })
+
+    return combined
+  }
+
+  private ensureCombinedDirExists(): void {
+    if (!fs.existsSync(this.combinedPath)) {
+      try {
+        fs.mkdirSync(this.combinedPath, { recursive: true })
+      } catch (error) {
+        throw new LocaleError(`Failed to create combined directory: ${this.combinedPath}`, {
+          originalError: error instanceof Error ? error.message : 'Unknown error',
+        })
+      }
+    }
+  }
+
+  private safeWriteFile(filePath: string, content: string): void {
+    try {
+      fs.writeFileSync(filePath, content, { encoding: 'utf8' })
+    } catch (error) {
+      throw new LocaleError(`Failed to write file: ${filePath}`, {
+        originalError: error instanceof Error ? error.message : 'Unknown error',
+      })
+    }
+  }
+
+  private async processDictionaries(): Promise<void> {
+    if (this.isProcessing) {
+      return
+    }
+
+    this.isProcessing = true
+    try {
+      // Validate directories
+      this.validateDirectory(this.enPath, 'English')
+      this.validateDirectory(this.trPath, 'Turkish')
+
+      // Ensure combined directory exists
+      this.ensureCombinedDirExists()
+
+      // Compare keys between languages
+      this.compareLanguageKeys()
+
+      // Combine translations
+      const enCombined = this.combineJsonFiles(this.enPath)
+      const trCombined = this.combineJsonFiles(this.trPath)
+
+      // Write combined files
+      this.safeWriteFile(path.join(this.combinedPath, 'en.json'), JSON.stringify(enCombined, null, 2))
+      this.safeWriteFile(path.join(this.combinedPath, 'tr.json'), JSON.stringify(trCombined, null, 2))
+
+      this.emit('success', 'Translations processed successfully')
+    } catch (error) {
+      if (error instanceof LocaleError) {
+        this.emit('error', { message: error.message, details: error.details })
+      } else if (error instanceof Error) {
+        this.emit('error', { message: error.message })
+      } else {
+        this.emit('error', { message: 'An unknown error occurred' })
+      }
+    } finally {
+      this.isProcessing = false
+    }
+  }
+
+  public startWatching(): void {
+    if (this.watchers.length > 0) {
+      return
+    }
+
+    try {
+      const watchOptions = { persistent: true, encoding: 'utf8' as const }
+
+      // Watch English translations directory
+      const enWatcher = fs.watch(this.enPath, watchOptions, this.handleFileChange.bind(this))
+      this.watchers.push(enWatcher)
+
+      // Watch Turkish translations directory
+      const trWatcher = fs.watch(this.trPath, watchOptions, this.handleFileChange.bind(this))
+      this.watchers.push(trWatcher)
+
+      this.emit('info', 'Started watching translation files')
+      this.processDictionaries() // Initial processing
+    } catch (error) {
+      this.emit('error', {
+        message: 'Failed to start file watchers',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      })
+    }
+  }
+
+  private handleFileChange(eventType: string, filename: string | null): void {
+    if (!filename || !filename.endsWith('.json')) {
+      return
+    }
+
+    if (this.debounceTimeout) {
+      clearTimeout(this.debounceTimeout)
+    }
+
+    // Debounce file changes to prevent multiple rapid processing
+    this.debounceTimeout = setTimeout(() => {
+      this.processDictionaries()
+    }, 300)
+  }
+
+  public stopWatching(): void {
+    if (this.watchers.length > 0) {
+      this.watchers.forEach((watcher) => watcher.close())
+      this.watchers = []
+
+      if (this.debounceTimeout) {
+        clearTimeout(this.debounceTimeout)
+        this.debounceTimeout = null
+      }
+      this.emit('info', 'Stopped watching translation files')
     }
   }
 }
 
-// Safe write file function
-function safeWriteFile(filePath: string, content: string): void {
-  try {
-    fs.writeFileSync(filePath, content, { encoding: 'utf8' })
-  } catch (error) {
-    throw new LocaleError(`Failed to write file: ${filePath}`, { originalError: error instanceof Error ? error.message : 'Unknown error' })
-  }
-}
+// Create and start the translation manager
+const manager = new TranslationManager(__dirname)
 
-try {
-  const enPath = path.join(__dirname, 'en')
-  const trPath = path.join(__dirname, 'tr')
-
-  // Validate directories
-  console.log('Validating language directories...')
-  validateDirectory(enPath, 'English')
-  validateDirectory(trPath, 'Turkish')
-
-  // Ensure combined directory exists
-  ensureCombinedDirExists(__dirname)
-
-  // Compare keys between languages
-  console.log('Checking translation key consistency between languages...')
-  compareLanguageKeys(enPath, trPath)
-
-  // If we get here, keys match between languages, so we can combine
-  console.log('Checking and combining English translations...')
-  const enCombined = combineJsonFiles(enPath)
-  safeWriteFile(path.join(__dirname, 'combined', 'en.json'), JSON.stringify(enCombined, null, 2))
-
-  console.log('Checking and combining Turkish translations...')
-  const trCombined = combineJsonFiles(trPath)
-  safeWriteFile(path.join(__dirname, 'combined', 'tr.json'), JSON.stringify(trCombined, null, 2))
-
-  console.log('✅ Locale files have been checked and combined successfully!')
-} catch (error) {
-  console.error('❌ Error while processing locale files:')
-  if (error instanceof LocaleError) {
-    console.error(`${error.name}: ${error.message}`)
+manager
+  .on('success', (message) => {
+    console.log('✅', message)
+  })
+  .on('error', (error: TranslationError) => {
+    console.error(`${new Date().toISOString()}❌ Error:`, error.message)
     if (error.details) {
       console.error('Details:', JSON.stringify(error.details, null, 2))
     }
-  } else if (error instanceof Error) {
-    console.error(`Unexpected error: ${error.message}`)
-    if (error.stack) {
-      console.error('Stack trace:', error.stack)
-    }
-  } else {
-    console.error('An unknown error occurred:', error)
-  }
-  process.exit(1)
-}
+  })
+  .on('info', (message) => {
+    console.log('ℹ️', message)
+  })
+
+manager.startWatching()
 ```
