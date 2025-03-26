@@ -11,7 +11,7 @@
 
 - Write lyrics metadata to audio files using NodeID3
 - JavaScript/Node.js
-  
+
 ---
 
 [Auth Verifier](./auth-verifier)
