@@ -78,6 +78,10 @@ export default defineConfig({
             text: "Electron Window Manager Utility",
             link: "/electron-window-manager-utility",
           },
+          {
+            text: "Combine Locals",
+            link: "/combine-locals",
+          },
         ].sort((a, b) => a.text.localeCompare(b.text)),
       },
     ],

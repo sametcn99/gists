@@ -42,6 +42,16 @@
 
 ---
 
+[Combine Locales](./combine-locales)
+
+- Locale key comparison utility for English and Turkish translations
+- Compares keys between two language directories
+- Generates error messages for missing keys
+- Provides detailed information about missing keys
+- TypeScript
+
+---
+
 [Date Range Slicer](./date-range-slicer)
 
 - Redux date range state management implementation
