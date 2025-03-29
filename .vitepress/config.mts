@@ -8,7 +8,6 @@ export default defineConfig({
   outDir: "./.vitepress/dist",
   lang: "en-US",
   titleTemplate: " sametcc.me",
-  appearance: "force-dark",
   ignoreDeadLinks: true,
   themeConfig: {
     search: {
