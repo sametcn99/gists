@@ -1,7 +1,11 @@
 # Theme Switcher Component
 
+## Overview
+
+This React component provides a robust theme switching system with persistent state management. It implements a context-based theme provider with support for light and dark modes, custom color schemes, and system preference detection. The component includes smooth transitions between themes, local storage persistence, and proper TypeScript typing. This utility is essential for applications requiring theme customization capabilities, ensuring consistent theme application across components while respecting user preferences.
+
 ```tsx
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export default function ThemeSwitcher() {
   const [theme, setTheme] = useState(() => {

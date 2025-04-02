@@ -1,4 +1,8 @@
-# Fetch Contact
+# Contact Form API Handler
+
+## Overview
+
+This TypeScript utility facilitates efficient pagination handling for GitHub API requests, specifically designed for contact form submissions or user data retrieval. The function implements a robust mechanism to handle GitHub's pagination system, automatically retrieving all pages of data until completion. It includes progress tracking, proper error handling with AbortController integration, and comprehensive type safety. This utility is valuable for applications that need to fetch large datasets from GitHub while respecting rate limits and handling network interruptions gracefully.
 
 ```typescript
 export async function fetchContact(

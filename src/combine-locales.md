@@ -1,6 +1,8 @@
-# Combine and validate locale files
+# Combine and Validate Locale Files
 
-This script is designed to validate and combine locale files for a project. It checks for consistency between English and Turkish translations, ensuring that all keys are present in both languages. If any discrepancies are found, it provides detailed error messages to help identify the issues. The script also combines the JSON files from each language directory into a single file for each language, ensuring that the combined files are properly formatted and free of errors.
+## Overview
+
+This advanced TypeScript utility manages multilingual application translation files, specifically focusing on synchronizing English and Turkish localization files. It provides real-time validation and automatic combining of locale JSON files, detecting missing translation keys, type mismatches, and format inconsistencies between languages. The script includes a file watcher that automatically processes changes, making it ideal for development workflows. With detailed error reporting and proper file management, this utility ensures translation consistency and completeness in multilingual applications.
 
 ```typescript
 import { EventEmitter } from "events";

@@ -1,5 +1,9 @@
 # Delete Folder PowerShell Script
 
+## Overview
+
+This PowerShell script provides a secure and interactive approach to deleting directories with recursive content. It implements a user-friendly command-line interface that guides users through the deletion process with confirmation prompts and comprehensive error handling. The script performs validation checks to ensure the target path exists and is a directory before proceeding with deletion. This utility is particularly valuable for system administrators, developers cleaning up workspace environments, or anyone needing a safe way to remove directory structures while maintaining full control over the operation through interactive prompts.
+
 ```powershell
 # Prompt the user for the full path of the folder to delete
 $folderPath = Read-Host "Enter the full path of the folder you want to delete"

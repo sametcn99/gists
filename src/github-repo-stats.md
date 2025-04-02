@@ -1,4 +1,8 @@
-# GitHub Repository Statistics Utility
+# GitHub Repository Statistics Calculator
+
+## Overview
+
+This TypeScript utility calculates comprehensive statistics for GitHub repositories. It processes repository data to generate meaningful metrics including language distribution, contribution patterns, and engagement statistics. The utility implements efficient data aggregation methods with proper type safety and includes calculations for trending repositories, active periods, and popular topics. This tool is particularly valuable for GitHub analytics dashboards, repository insights pages, or any application that needs to present repository statistics in a meaningful way.
 
 ```typescript
 // Importing GitHubRepo type from the specified module

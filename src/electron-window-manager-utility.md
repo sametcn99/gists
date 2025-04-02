@@ -1,5 +1,9 @@
 # Electron Window Manager Utility
 
+## Overview
+
+This TypeScript utility provides a comprehensive window management system for Electron applications. It encapsulates common window operations like opening, positioning, resizing, centering, and maximizing, offering a clean API for consistent window behavior across your application. The class maintains window state with proper type definitions and implements cross-platform positioning logic for desktop applications. This utility is particularly valuable for Electron applications requiring precise window control, multi-window management, or custom window layouts with proper positioning relative to screen dimensions.
+
 ```typescript
 type WindowPosition = {
   x: number;

@@ -1,5 +1,9 @@
 # Article Styles
 
+## Overview
+
+This CSS snippet provides a comprehensive styling guide for article content in web applications. It defines consistent typography and layout rules for various HTML elements within articles. The styles ensure proper hierarchy through heading sizes, readable paragraph formats, and clear styling for links, lists, and blockquotes. These styles can be applied to any content with the `.article` class wrapper to maintain a professional and consistent reading experience across your website or application.
+
 ```css
 /* Heading Styles for article */
 .article h1 {

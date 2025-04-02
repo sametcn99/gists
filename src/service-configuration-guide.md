@@ -1,4 +1,8 @@
-# Service Configuration
+# Service Configuration Guide
+
+## Overview
+
+This configuration template provides a comprehensive setup guide for microservice architecture implementation. It establishes standardized patterns for service discovery, health checking, logging, and monitoring in distributed systems. The configuration includes environment-specific settings, security parameters, and integration points with external services. This guide is essential for teams implementing microservices, ensuring consistent configuration across services while maintaining security and operational best practices.
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;

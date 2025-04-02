@@ -1,4 +1,8 @@
-# Convert to Milliseconds Utility
+# Convert Time to Milliseconds
+
+## Overview
+
+This TypeScript utility provides a clean, type-safe way to convert human-readable time values (hours, minutes, seconds) into milliseconds. It uses TypeScript's type system to enforce proper parameter structure and offers default values for optional parameters. The function is particularly useful for applications that require precise timing calculations, such as animations, timers, scheduled operations, or API request timeouts. The utility follows functional programming principles and includes a practical usage example.
 
 ```typescript
 type Time = {

@@ -1,4 +1,8 @@
-# Dictionary Context
+# Dictionary Context Provider
+
+## Overview
+
+This React Context API implementation provides a comprehensive dictionary management system for web applications. It creates a global state for dictionary entries with complete TypeScript type safety, offering functions for adding, removing, updating, and searching dictionary items. Each dictionary entry includes rich metadata like part of speech and usage examples. This provider is ideal for language learning applications, terminology management systems, or any application requiring vocabulary management. The implementation follows React best practices with proper context initialization, state management, and consumer error handling.
 
 ```tsx
 import { createContext, useContext, ReactNode, useState } from "react";

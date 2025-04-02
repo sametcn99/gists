@@ -1,4 +1,8 @@
-# Write Lyrics to Audio Files
+# Audio Lyrics Writer
+
+## Overview
+
+This Node.js utility script helps music enthusiasts automatically add lyrics to their audio files. It processes a directory of audio files (.mp3, .m4a, .wav) and matches each with a corresponding text file containing lyrics. The script uses the NodeID3 library to embed the lyrics directly into the audio file's metadata, preserving them when the file is played on compatible media players. This automation tool is particularly useful for maintaining large music libraries where manually adding lyrics would be time-consuming.
 
 ```javascript
 const fs = require("fs");

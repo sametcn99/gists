@@ -1,5 +1,9 @@
 # useFetch Custom Hook
 
+## Overview
+
+This React custom hook provides a complete solution for data fetching in React applications with TypeScript support. It encapsulates the fetch API with proper loading state tracking, error handling, and automatic cleanup to prevent memory leaks. The hook implements the AbortController API to cancel pending requests when components unmount, preventing race conditions and state updates on unmounted components. This utility is particularly valuable for React applications requiring data from external APIs, offering a standardized approach to handling asynchronous operations with proper TypeScript typing for the response data.
+
 ```tsx
 import { useState, useEffect } from "react";
 

@@ -1,4 +1,8 @@
-# Copy Directory Script
+# Copy Directory Utility
+
+## Overview
+
+This Node.js utility provides a robust solution for copying directories recursively in file system operations. The function handles both files and nested directories, preserving the entire structure and content during the copy process. It implements proper error handling with detailed logging and uses Node.js built-in file system modules for maximum compatibility. This utility is particularly useful for backup operations, build processes, or any scenario requiring programmatic directory duplication. The recursive approach ensures that complex directory hierarchies are properly maintained.
 
 ```javascript
 // Import necessary modules

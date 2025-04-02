@@ -1,4 +1,8 @@
-# Text Regular Expressions
+# Regular Expression Text Utility
+
+## Overview
+
+This TypeScript utility provides a comprehensive set of regular expression patterns for common text processing tasks. It implements pre-compiled regex patterns for validating and extracting common data formats including emails, URLs, phone numbers, and date strings. The utility includes proper TypeScript typing and detailed documentation for each pattern's purpose and limitations. This tool is particularly valuable for form validation, text parsing, or any application requiring consistent and reliable text pattern matching across multiple formats.
 
 ```typescript
 export const patterns = {

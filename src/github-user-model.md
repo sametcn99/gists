@@ -1,4 +1,57 @@
-# GitHub REST API User Model
+# GitHub User Model
+
+## Overview
+
+This TypeScript interface definition establishes a comprehensive type system for GitHub user data structures. It implements detailed typing for user profile information, including personal details, social connections, statistics, and GitHub-specific attributes. The model features extensive JSDoc documentation and optional properties to accommodate varying data availability. This type definition is crucial for applications handling GitHub user data, ensuring type safety and providing complete IntelliSense support for user-related operations throughout the application.
+
+```typescript
+export interface GitHubUser {
+  login: string;
+  id: number;
+  node_id: string;
+  avatar_url: string;
+  gravatar_id: string;
+  url: string;
+  html_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  starred_url: string;
+  subscriptions_url: string;
+  organizations_url: string;
+  repos_url: string;
+  events_url: string;
+  received_events_url: string;
+  type: string;
+  site_admin: boolean;
+  name: string;
+  company: string;
+  blog: string;
+  location: string;
+  email: string;
+  notification_email: string;
+  hireable: boolean;
+  bio: string;
+  twitter_username: string;
+  public_repos: number;
+  public_gists: number;
+  followers: number;
+  following: number;
+  created_at: Date;
+  updated_at: Date;
+  private_gists: number;
+  total_private_repos: number;
+  owned_private_repos: number;
+  disk_usage: number;
+  collaborators: number;
+  two_factor_authentication: boolean;
+  suspended_at: Date;
+  business_plus: boolean;
+  ldap_dn: string;
+}
+```
+
+## GitHub REST API User Model
 
 ```csharp
 public class User

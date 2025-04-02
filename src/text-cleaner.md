@@ -1,7 +1,11 @@
-# Text Cleaning and Formatting Utility
+# Text Cleaner Utility
+
+## Overview
+
+This TypeScript utility provides comprehensive text sanitization and formatting capabilities. It implements various cleaning operations including whitespace normalization, special character handling, HTML entity encoding/decoding, and smart quote standardization. The utility includes configurable options for different cleaning levels and supports Unicode text processing. This tool is particularly valuable for applications requiring consistent text formatting, content management systems, or any scenario where text input needs to be sanitized before storage or display.
 
 ```typescript
-export function temizleVeDuzenle(text: string): string {
+export function cleanText(text: string): string {
   // Remove extra whitespace
   let temiz = text.trim().replace(/\s+/g, " ");
 

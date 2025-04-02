@@ -1,5 +1,9 @@
 # Authentication Verification Utility
 
+## Overview
+
+This utility provides a robust authentication verification system for Next.js applications using JSON Web Tokens (JWT). The main function `verifyAuth()` automatically checks for the presence of an auth cookie and validates its JWT token using a secret key stored in environment variables. This utility is essential for securing protected routes in web applications, implementing user-specific features, and managing user sessions. The code follows best practices for token verification and implements secure error handling to prevent unauthorized access.
+
 ```typescript
 import { cookies } from "next/headers";
 import { verifyJwtToken } from "./verify-jwt-token";

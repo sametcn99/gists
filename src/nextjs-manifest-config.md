@@ -1,5 +1,9 @@
 # Next.js Manifest Configuration
 
+## Overview
+
+This configuration utility provides a comprehensive Progressive Web App (PWA) manifest setup for Next.js applications. It implements essential PWA features including app icons, theme colors, display modes, and orientation preferences. The configuration includes proper TypeScript typing and follows PWA best practices for optimal mobile and desktop experiences. This setup is crucial for Next.js applications that need to function as installable PWAs, providing native-like functionality and improved user engagement through features like offline access and home screen installation.
+
 ```typescript
 import { MetadataRoute } from "next";
 

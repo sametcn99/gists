@@ -1,7 +1,10 @@
 # Hello World Translations
 
+## Overview
+
+This internationalization utility provides a comprehensive collection of "Hello World" translations across multiple languages with proper language codes and regional variants. It implements a type-safe structure for managing translations, including directionality support for right-to-left languages and character set handling. This collection is particularly useful for testing internationalization systems, demonstrating language support in applications, or creating language selection interfaces with native language names.
+
 ```json
-{
   "hello_world": {
     "English (United Kingdom, United States, various English-speaking countries)": "Hello World",
     "Spanish (Spain, Latin America)": "Hola Mundo",
@@ -23,5 +26,4 @@
     "Turkish (Turkey)": "Merhaba Dünya",
     "Hindi (India)": "नमस्ते दुनिया"
   }
-}
 ```

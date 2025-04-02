@@ -1,4 +1,8 @@
-# Get Dates Utility
+# Date Utility
+
+## Overview
+
+This TypeScript utility analyzes blog post dates to generate chronological navigation structure for content archives. It processes date information from post metadata to create month-based navigation with accurate post counts. The function returns three synchronized arrays: human-readable date strings with post counts (e.g., "January 2023 (5)"), start date objects, and end date objects for each month. This utility is particularly valuable for creating archive sidebars, date-based filtering systems, or temporal content organization in blogs and content management systems.
 
 ```typescript
 // Importing the getSortedPostsData function from the specified module

@@ -1,6 +1,11 @@
-# Site Configuration
+# Website Configuration
+
+## Overview
+
+This configuration module provides a centralized management system for website settings and metadata. It implements a type-safe configuration structure for managing SEO metadata, site navigation, API endpoints, and environment-specific settings. The configuration includes support for multiple environments, content delivery network integration, and analytics setup. This utility is essential for web applications requiring consistent configuration across different deployment environments while maintaining type safety and easy maintenance of global settings.
 
 ```typescript
+import { Metadata } from "next";
 import { SiteConfig, MetaConfig } from "./site-config-types";
 
 export const siteConfig: SiteConfig = {
